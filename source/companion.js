@@ -6,33 +6,22 @@ const debug = true;
 let settings = {};
 
 /**
- * A user changes settings
+ * Sends the settings to the device
  */
-settingsStorage.onchange = evt => {
-	settings[evt.key] = JSON.parse(evt.newValue);
-
-	for (const key in settings) {
-		if (settings.hasOwnProperty(key)) {
-			const value = settings[key];
-			if (value && value.values && value.values.length > 0) {
-				settings[key] = value.values[0].value || value.values[0].name;
-			}
-		}
-	}
-
+function send() {
 	debug && console.log('Send settings');
 
 	/* Send settings to the watch */
 	outbox.enqueue('settings.cbor', cbor.encode(settings))
 		.then(ft => debug && console.log('settings sent'))
 		.catch(error => console.log("Error sending settings: " + error));
-};
+}
 
 /**
  * Initializes the settings
  * Restore any previously saved settings
  */
-export function initialize() {
+export function initialize(defaultSettings) {
 	for (let index = 0; index < settingsStorage.length; index++) {
 		let key = settingsStorage.key(index);
 		if (key) {
@@ -45,4 +34,40 @@ export function initialize() {
 			}
 		}
 	}
+
+	/* Send default settings to the device */
+	if (defaultSettings) {
+		let hasDefaultSettings;
+		for (const key in defaultSettings) {
+			if (defaultSettings.hasOwnProperty(key) && !settingsStorage.getItem(key)) {
+				let value = defaultSettings[key];
+				settings[key] = value;
+				settingsStorage.setItem(key, value);
+				hasDefaultSettings = true;
+			}
+		}
+
+		/* Send the settings to the device */
+		if (hasDefaultSettings && settings && Object.keys(settings).length > 0) {
+			debug && console.log('Send default settings')
+			send();
+		}
+	}
+
+	/* A user changes settings */
+	settingsStorage.onchange = evt => {
+		settings[evt.key] = JSON.parse(evt.newValue);
+
+		for (const key in settings) {
+			if (settings.hasOwnProperty(key)) {
+				const value = settings[key];
+				if (value && value.values && value.values.length > 0) {
+					settings[key] = value.values[0].value || value.values[0].name;
+				}
+			}
+		}
+
+		/* Send the settings to the device */
+		send();
+	};
 }

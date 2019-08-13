@@ -1,12 +1,12 @@
 {
-  "name": "fitbit-asap-test",
+  "name": "fitbit-fs-settings-test",
   "version": "1.2.2",
   "private": true,
   "license": "MIT",
   "fitbit": {
     "appUUID": "e769a22e-1c98-425d-a934-7dc1127c8b59",
     "appType": "app",
-    "appDisplayName": "Fitbit ASAP",
+    "appDisplayName": "Fitbit FS Settings",
     "iconFile": "resources/icon.png",
     "wipeColor": "#ffffff",
     "requestedPermissions": [
@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@fitbit/sdk": "3.1.2",
-    "@fitbit/sdk-cli": "1.6.3"
+    "@fitbit/sdk-cli": "^1.6.3"
   },
   "scripts": {
     "build": "fitbit-build",

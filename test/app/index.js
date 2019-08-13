@@ -1,6 +1,6 @@
 import clock from "clock";
 import document from "document";
-import * as deviceSettings from "../../source/settings";
+import * as deviceSettings from "../../source/app";
 
 let clockText = document.getElementById("clockText");
 let dateText = document.getElementById("dateText");
