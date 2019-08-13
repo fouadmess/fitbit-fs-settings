@@ -41,7 +41,7 @@ export function initialize(defaultSettings) {
 		for (const key in defaultSettings) {
 			if (defaultSettings.hasOwnProperty(key) && !settingsStorage.getItem(key)) {
 				let value = defaultSettings[key];
-				settings[key] = value;
+				settings[key] = flatten(value);
 				settingsStorage.setItem(key, value);
 				hasDefaultSettings = true;
 			}
@@ -60,14 +60,23 @@ export function initialize(defaultSettings) {
 
 		for (const key in settings) {
 			if (settings.hasOwnProperty(key)) {
-				const value = settings[key];
-				if (value && value.values && value.values.length > 0) {
-					settings[key] = value.values[0].value || value.values[0].name;
-				}
+				settings[key] = flatten(settings[key]);
 			}
 		}
 
 		/* Send the settings to the device */
 		send();
 	};
+}
+
+/**
+ * Flatten settings
+ * @param {*} value 
+ */
+function flatten(value) {
+	if (value && value.values && value.values.length > 0) {
+		value = value.values[0].value || value.values[0].name;
+	}
+
+	return value;
 }
