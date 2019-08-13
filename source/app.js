@@ -4,7 +4,6 @@ import { readFileSync } from "fs";
 const debug = true;
 let defaultSettings = {};
 let settings = defaultSettings;
-let onSettingsChange;
 
 /**
  * Loads settings from device memory
@@ -29,32 +28,35 @@ function loadSettings() {
 }
 
 /**
- * Reads setting file
- */
-inbox.onnewfile = () => {
-	let fileName;
-	while (fileName = inbox.nextFile()) {
-		debug && console.log("File received: " + fileName);
-
-		if (fileName === 'settings.cbor') {
-			/* Load settings */
-			loadSettings();
-
-			/* Invoke callback function to apply settings */
-			onSettingsChange(settings);
-		}
-	}
-};
-
-/**
  * Init. settings
  * @param {*} callback 
+ * @param {*} newFileCallback 
  */
-export function initialize(callback) {
+export function initialize(callback, newFileCallback) {
 	/* Load stored settings if any at startup */
 	loadSettings();
 
 	/* Invoke callback function to apply settings */
-	onSettingsChange = callback;
-	onSettingsChange(settings);
+	callback(settings);
+
+	/* Reads setting file */
+	inbox.onnewfile = () => {
+		let fileName;
+		while (fileName = inbox.nextFile()) {
+			debug && console.log("File received: " + fileName);
+
+			if (fileName === 'settings.cbor') {
+				/* Load settings */
+				loadSettings();
+
+				/* Invoke callback function to apply settings */
+				callback(settings);
+			}
+
+			/* Process new file */
+			if (newFileCallback) {
+				newFileCallback(fileName);
+			}
+		}
+	};
 }
