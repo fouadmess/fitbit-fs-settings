@@ -7,13 +7,12 @@ environment:
     - nodejs_version: LTS
 
 install:
-- ps: >-
-   npm install --loglevel=error
-   npm install -g typescript
+- ps: npm install --loglevel=error
 
 before_build:
   - node --version
   - npm --version
+  - npm install -g typescript
   - npm run build
 
 cache:
