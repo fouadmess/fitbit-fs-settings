@@ -9,6 +9,7 @@ environment:
 install:
 - ps: >-
     npm install --loglevel=error
+    npm run build
 
 before_build:
   # Output useful info for debugging.
@@ -26,7 +27,6 @@ deploy_script:
       if ($ENV:CONFIGURATION -eq "publish")
       {
         "//registry.npmjs.org/:_authToken=`$`{npm_auth_token`}" | Out-File (Join-Path $ENV:APPVEYOR_BUILD_FOLDER ".npmrc") -Encoding UTF8
-        iex "npm pack"
         iex "npm publish"
       }
     on:
