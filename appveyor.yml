@@ -13,7 +13,7 @@ before_build:
   - node --version
   - npm --version
 
-build:
+after_build:
 - ps: npm run build
 
 cache:
