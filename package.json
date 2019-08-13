@@ -1,0 +1,25 @@
+{
+  "name": "fitbit-fs-settings",
+  "version": "1.0.0",
+  "description": "Send settings to Fitbit device using file transfer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fouadmess/fitbit-fs-settings.git"
+  },
+  "keywords": [
+    "fitbitdev"
+  ],
+  "author": "Fouad Messaia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fouadmess/fitbit-fs-settings/issues"
+  },
+  "homepage": "https://github.com/fouadmess/fitbit-fs-settings#readme",
+  "devDependencies": {
+    "@fitbit/sdk": "~3.1.2"
+  },
+  "scripts": {
+    "build": "tsc -project ./source/tsconfig.json --outDir ./",
+    "prepare": "npm run build"
+  }
+}

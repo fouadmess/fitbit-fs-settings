@@ -1,0 +1,9 @@
+{
+  "extends": "../node_modules/@fitbit/sdk/sdk-tsconfig.json",
+  "compilerOptions": {
+    "lib": [
+      "es2015",
+      "es2015.iterable"
+    ]
+  }
+}
