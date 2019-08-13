@@ -1,6 +1,6 @@
 {
   "name": "fitbit-fs-settings",
-  "version": "1.0.3.beta02",
+  "version": "1.0.3-beta02",
   "description": "Send settings to Fitbit device using file transfer",
   "repository": {
     "type": "git",
