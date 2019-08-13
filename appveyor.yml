@@ -12,9 +12,7 @@ install:
 before_build:
   - node --version
   - npm --version
-
-after_build:
-- ps: npm run build
+  - npm run build
 
 cache:
   - node_modules -> package.json
