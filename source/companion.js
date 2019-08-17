@@ -5,6 +5,22 @@ import { settingsStorage } from "settings";
 const debug = true;
 let settings = {};
 
+/* A user changes settings */
+settingsStorage.onchange = evt => {
+	debug && console.log('Settings changed');
+
+	settings[evt.key] = JSON.parse(evt.newValue);
+
+	for (const key in settings) {
+		if (settings.hasOwnProperty(key)) {
+			settings[key] = flatten(settings[key]);
+		}
+	}
+
+	/* Send the settings to the device */
+	send();
+};
+
 /**
  * Sends the settings to the device
  */
@@ -37,36 +53,17 @@ export function initialize(defaultSettings) {
 
 	/* Send default settings to the device */
 	if (defaultSettings) {
-		let hasDefaultSettings;
 		for (const key in defaultSettings) {
 			if (defaultSettings.hasOwnProperty(key) && !settingsStorage.getItem(key)) {
 				let value = defaultSettings[key];
 				settings[key] = flatten(value);
 				settingsStorage.setItem(key, value);
-				hasDefaultSettings = true;
 			}
-		}
-
-		/* Send the settings to the device */
-		if (hasDefaultSettings && settings && Object.keys(settings).length > 0) {
-			debug && console.log('Send default settings')
-			send();
 		}
 	}
 
-	/* A user changes settings */
-	settingsStorage.onchange = evt => {
-		settings[evt.key] = JSON.parse(evt.newValue);
-
-		for (const key in settings) {
-			if (settings.hasOwnProperty(key)) {
-				settings[key] = flatten(settings[key]);
-			}
-		}
-
-		/* Send the settings to the device */
-		send();
-	};
+	/* Send settings to the device */
+	send();
 }
 
 /**
