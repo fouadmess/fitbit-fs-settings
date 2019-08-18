@@ -11,12 +11,6 @@ settingsStorage.onchange = evt => {
 
 	settings[evt.key] = JSON.parse(evt.newValue);
 
-	for (const key in settings) {
-		if (settings.hasOwnProperty(key)) {
-			settings[key] = flatten(settings[key]);
-		}
-	}
-
 	/* Send the settings to the device */
 	send();
 };
@@ -26,6 +20,13 @@ settingsStorage.onchange = evt => {
  */
 function send() {
 	debug && console.log('Send settings');
+
+	/* Flatten some settings */
+	for (const key in settings) {
+		if (settings.hasOwnProperty(key)) {
+			settings[key] = flatten(settings[key]);
+		}
+	}
 
 	/* Send settings to the watch */
 	outbox.enqueue('settings.cbor', cbor.encode(settings))
@@ -56,7 +57,7 @@ export function initialize(defaultSettings) {
 		for (const key in defaultSettings) {
 			if (defaultSettings.hasOwnProperty(key) && !settingsStorage.getItem(key)) {
 				let value = defaultSettings[key];
-				settings[key] = flatten(value);
+				settings[key] = value;
 				settingsStorage.setItem(key, value);
 			}
 		}
