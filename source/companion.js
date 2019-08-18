@@ -58,7 +58,7 @@ export function initialize(defaultSettings) {
 			if (defaultSettings.hasOwnProperty(key) && !settingsStorage.getItem(key)) {
 				let value = defaultSettings[key];
 				settings[key] = value;
-				settingsStorage.setItem(key, value);
+				settingsStorage.setItem(key, JSON.stringify(value));
 			}
 		}
 	}
