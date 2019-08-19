@@ -5,16 +5,6 @@ import { settingsStorage } from "settings";
 const debug = true;
 let settings = {};
 
-/* A user changes settings */
-settingsStorage.onchange = evt => {
-	debug && console.log('Settings changed');
-
-	settings[evt.key] = JSON.parse(evt.newValue);
-
-	/* Send the settings to the device */
-	send();
-};
-
 /**
  * Sends the settings to the device
  */
@@ -38,7 +28,21 @@ function send() {
  * Initializes the settings
  * Restore any previously saved settings
  */
-export function initialize(defaultSettings) {
+export function initialize(defaultSettings, onSettingChangedCallback) {
+	/* A user changes settings */
+	settingsStorage.onchange = evt => {
+		debug && console.log('Settings changed');
+
+		if (onSettingChangedCallback) {
+			onSettingChangedCallback(evt);
+		}
+
+		settings[evt.key] = JSON.parse(evt.newValue);
+
+		/* Send the settings to the device */
+		send();
+	};
+
 	for (let index = 0; index < settingsStorage.length; index++) {
 		let key = settingsStorage.key(index);
 		if (key) {
