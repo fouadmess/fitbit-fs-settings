@@ -27,5 +27,4 @@ test: off
 
 deploy_script:
 - ps: >-
-    npm pack
     npm publish
