@@ -1,28 +1,15 @@
 version: 1.0.{build}
 image: Ubuntu1804
-environment:
-  matrix:
-    - nodejs_version: STABLE
-      configuration: publish
-    - nodejs_version: LTS
 install:
 - ps: >-
     npm install --loglevel=error
+
+
     "//registry.npmjs.org/:_authToken=`$`{npm_auth_token`}" | Out-File (Join-Path $ENV:APPVEYOR_BUILD_FOLDER ".npmrc") -Encoding UTF8
-
-before_build:
-  - node --version
-  - npm --version
-  - npm install -g typescript
-  - npm run build
-
-cache:
-  - node_modules -> package.json
-  - '%APPDATA%\npm-cache'
-
 build:
   verbosity: minimal
 after_deploy:
 - ps: >-
     npm pack
+
     npm publish
