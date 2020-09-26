@@ -4,13 +4,18 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: '10.x'
+          registry-url: 'https://registry.npmjs.org'
       - run: npm install
-      - run: npm install -g typescript
-      - run: npm run build
-      - uses: JS-DevTools/npm-publish@v1
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - uses: actions/setup-node@v1
         with:
-          token: ${{ secrets.NPM_AUTH_TOKEN }}
+          registry-url: 'https://npm.pkg.github.com'
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
