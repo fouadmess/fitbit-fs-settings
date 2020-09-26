@@ -8,10 +8,21 @@ environment:
 
 install:
 - ps: >-
-    Install-Product node $env:nodejs_version
     npm install --loglevel=error
 
     "//registry.npmjs.org/:_authToken=$env:npm_auth_token`n" | out-file "$env:userprofile\.npmrc" -Encoding ASCII
+
+before_build:
+  - node --version
+  - npm --version
+  - npm install -g typescript
+  - npm run build
+
+cache:
+  - node_modules -> package.json
+  - '%APPDATA%\npm-cache'
+
+test: off
 
 after_deploy:
 - ps: npm publish "src/Dnt.Npm"
