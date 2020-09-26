@@ -18,11 +18,5 @@ before_build:
   - npm install -g typescript
   - npm run build
 
-cache:
-  - node_modules -> package.json
-  - '%APPDATA%\npm-cache'
-
-test: off
-
 after_deploy:
 - ps: npm publish "src/Dnt.Npm"
