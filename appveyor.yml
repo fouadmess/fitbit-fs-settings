@@ -8,23 +8,10 @@ environment:
 
 install:
 - ps: >-
+    Install-Product node $env:nodejs_version
     npm install --loglevel=error
 
+    "//registry.npmjs.org/:_authToken=$env:npm_auth_token`n" | out-file "$env:userprofile\.npmrc" -Encoding ASCII
 
-    "//registry.npmjs.org/:_authToken=`$`{npm_auth_token`}" | Out-File (Join-Path $ENV:APPVEYOR_BUILD_FOLDER ".npmrc") -Encoding UTF8
-
-before_build:
-  - node --version
-  - npm --version
-  - npm install -g typescript
-  - npm run build
-
-cache:
-  - node_modules -> package.json
-  - '%APPDATA%\npm-cache'
-
-test: off
-
-deploy_script:
-- ps: >-
-    npm publish
+after_deploy:
+- ps: npm publish "src/Dnt.Npm"
