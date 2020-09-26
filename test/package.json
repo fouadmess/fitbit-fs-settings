@@ -15,13 +15,14 @@
     "buildTargets": [
       "higgs",
       "meson",
-      "gemini"
+      "gemini",
+      "mira"
     ],
     "i18n": {}
   },
   "devDependencies": {
-    "@fitbit/sdk": "3.1.2",
-    "@fitbit/sdk-cli": "^1.6.3"
+    "@fitbit/sdk": "^4.2.1",
+    "@fitbit/sdk-cli": "^1.7.3"
   },
   "scripts": {
     "build": "fitbit-build",
