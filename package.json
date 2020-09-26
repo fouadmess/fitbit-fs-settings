@@ -19,7 +19,7 @@
     "@fitbit/sdk": "^4.2.1"
   },
   "scripts": {
-    "build": "tsc -project ./source/tsconfig.json --outDir ./",
+    "build": "tsc -project ./source/tsconfig.json --outDir ./dist",
     "prepare": "npm run build"
   }
 }
