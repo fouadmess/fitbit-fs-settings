@@ -1,6 +1,6 @@
 {
   "name": "fitbit-fs-settings",
-  "version": "1.1.2-rc08",
+  "version": "1.1.2-rc09",
   "description": "Send settings to Fitbit device using file transfer",
   "repository": {
     "type": "git",
@@ -18,6 +18,9 @@
   "devDependencies": {
     "@fitbit/sdk": "^4.2.1"
   },
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "build": "tsc -project ./source/tsconfig.json --outDir ./dist",
     "prepare": "npm run build"
