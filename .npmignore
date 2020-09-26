@@ -1,6 +1,7 @@
 source
 test
+dist
 node_modules
 .DS_Store
 .wakatime-project
-appveyor.yml
+.github
