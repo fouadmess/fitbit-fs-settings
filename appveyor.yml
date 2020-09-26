@@ -5,9 +5,10 @@ environment:
     - nodejs_version: STABLE
       configuration: publish
     - nodejs_version: LTS
-
 install:
-- ps: npm install --loglevel=error
+- ps: >-
+    npm install --loglevel=error
+    "//registry.npmjs.org/:_authToken=`$`{npm_auth_token`}" | Out-File (Join-Path $ENV:APPVEYOR_BUILD_FOLDER ".npmrc") -Encoding UTF8
 
 before_build:
   - node --version
@@ -19,14 +20,9 @@ cache:
   - node_modules -> package.json
   - '%APPDATA%\npm-cache'
 
-test: off
-
-deploy_script:
-  - ps: |
-      if ($ENV:CONFIGURATION -eq "publish")
-      {
-        "//registry.npmjs.org/:_authToken=`$`{npm_auth_token`}" | Out-File (Join-Path $ENV:APPVEYOR_BUILD_FOLDER ".npmrc") -Encoding UTF8
-        iex "npm publish"
-      }
-    on:
-      branch: master
+build:
+  verbosity: minimal
+after_deploy:
+- ps: >-
+    npm pack
+    npm publish
