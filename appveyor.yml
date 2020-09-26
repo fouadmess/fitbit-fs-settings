@@ -11,5 +11,5 @@ build:
 after_deploy:
 - ps: >-
     npm pack
-
+    npm config set '//registry.npmjs.org/:_authToken' "${npm_auth_token}"
     npm publish
